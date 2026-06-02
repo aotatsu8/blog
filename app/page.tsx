@@ -15,7 +15,7 @@ export default function HomePage() {
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
           {siteConfig.name}
         </h1>
-        <p className="max-w-prose leading-relaxed text-neutral-600 dark:text-neutral-300">
+        <p className="max-w-prose whitespace-pre-line leading-relaxed text-neutral-600 dark:text-neutral-300">
           {siteConfig.description}
         </p>
         <div className="flex flex-wrap gap-3 pt-2 text-sm">

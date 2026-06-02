@@ -20,6 +20,9 @@ export function Footer() {
           <a href={siteConfig.social.twitter} target="_blank" rel="noopener noreferrer" className="hover:text-neutral-700 dark:hover:text-neutral-200">
             X / Twitter
           </a>
+          <a href={siteConfig.social.qiita} target="_blank" rel="noopener noreferrer" className="hover:text-neutral-700 dark:hover:text-neutral-200">
+            Qiita
+          </a>
         </div>
         <p>
           © {siteConfig.name}. All rights reserved.
