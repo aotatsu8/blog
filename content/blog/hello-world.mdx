@@ -1,0 +1,30 @@
+---
+title: 'Next.js 静的書き出しで個人サイトを作った'
+description: 'App Router + MDX + Cloudflare Pages の無料構成でポートフォリオサイトを構築した話。'
+date: '2026-05-20'
+tags: ['Next.js', 'TypeScript', 'Cloudflare Pages']
+hasAffiliate: false
+---
+
+個人サイトを **Next.js (App Router)** の静的書き出し（`output: 'export'`）で構築しました。
+Cloudflare Pages の無料枠にデプロイでき、ランニングコストはゼロです。
+
+## 技術スタック
+
+- Next.js 15 + React 19 + TypeScript
+- Tailwind CSS v4
+- MDX（frontmatter 付き）でコンテンツ管理
+
+## ポイント
+
+静的書き出しでは Route Handler の動的処理や ISR が使えないため、
+記事はビルド時に `generateStaticParams` で事前生成しています。
+
+```ts
+export function generateStaticParams() {
+  return getContentSlugs('blog').map((slug) => ({ slug }))
+}
+```
+
+タグでのフィルタはクライアント側で行うことで、静的書き出しと両立させています。
+今後はアフィリエイト記事なども追加していく予定です。
