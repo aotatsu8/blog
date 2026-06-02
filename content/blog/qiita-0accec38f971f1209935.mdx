@@ -1,0 +1,108 @@
+---
+title: 'App Routerで使えなくなる関数と代替方法'
+description: '🧭 App Routerで使えなくなる関数と代替方法（Next.js） Next.js の App Router（app/ ディレクトリ構成）では、従来の Pages Route…'
+date: '2025-04-26'
+tags: ['AppRouter']
+sourceUrl: 'https://qiita.com/aotatsu8/items/0accec38f971f1209935'
+sourceName: 'Qiita'
+hasAffiliate: false
+---
+Next.js の App Router（`app/` ディレクトリ構成）では、従来の Pages Router 専用関数が使えません。  
+ここでは、それぞれの代替手段と具体例をまとめます。
+
+---
+
+## ❌ App Routerで使えない関数とその代替
+
+| Pages Router（`pages/`）      | App Router（`app/`）での代替方法                  |
+|-------------------------------|------------------------------------------------|
+| `getStaticProps`              | `async` 関数内で `fetch()` or `fs` を直接呼ぶ   |
+| `getServerSideProps`          | `fetch(..., { cache: 'no-store' })`            |
+| `getInitialProps`             | 使わずにコンポーネントで直接データ取得          |
+| `getStaticPaths`              | `generateStaticParams()`                       |
+
+---
+
+## ✅ 1. `getStaticProps` の代替（静的データ取得）
+
+**Pages Router:**
+```ts
+export async function getStaticProps() {
+  const res = await fetch('https://api.example.com/posts');
+  const data = await res.json();
+  return { props: { data } };
+}
+```
+**App Router:**
+```ts
+// app/page.tsx
+export default async function Page() {
+  const res = await fetch('https://api.example.com/posts', {
+    cache: 'force-cache', // ← これでSSG相当になる
+  });
+  const data = await res.json();
+
+  return (
+    <div>
+      {data.map((post) => (
+        <p key={post.id}>{post.title}</p>
+      ))}
+    </div>
+  );
+}
+```
+## ✅ 2. getServerSideProps の代替（常に最新データ）
+
+**App Router:**
+```ts
+const res = await fetch('https://api.example.com/posts', {
+  cache: 'no-store' // ← SSR相当（キャッシュなし）
+});
+```
+
+## ✅ 3. getStaticPaths の代替 → generateStaticParams()
+**Pages Router:**
+```ts
+export async function getStaticPaths() {
+  const posts = await fetchPosts();
+  return {
+    paths: posts.map(post => ({ params: { id: post.id } })),
+    fallback: false,
+  };
+}
+
+```
+
+**App Router:**
+```ts
+// app/posts/[id]/page.tsx
+export async function generateStaticParams() {
+  const posts = await fetchPosts();
+  return posts.map(post => ({ id: post.id }));
+}
+
+export default async function Page({ params }: { params: { id: string } }) {
+  const post = await fetchPostById(params.id);
+  return <h1>{post.title}</h1>;
+}
+
+```
+
+## ✅ 4. getInitialProps は廃止方向
+App Routerでは getInitialProps を使わず、
+
+ページやコンポーネント内で直接 fetch() を使う構成に変わります。
+
+## 📌 fetchの使い分けまとめ
+| 目的 | fetchオプション |
+|:-:|:-:|
+| 静的生成（SSG  | cache: 'force-cache'（デフォルト）  |
+| 動的レンダリング（SSR） | cache: 'no-store'  |
+| ISR（再生成  |  next: \{ revalidate: 秒数 \} |
+
+## ✅ まとめ
+App Router では getStaticProps などは使えない
+
+ページを async function にするだけでデータ取得が可能
+
+SSR/SSG/ISRの挙動は fetch() のオプションでコントロールできる

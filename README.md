@@ -74,12 +74,32 @@ date: '2026-05-20'
 updated: '2026-05-30'      # 任意
 tags: ['Next.js', 'TypeScript']
 ogImage: '/og/foo.png'     # 任意。未指定はサイト共通デフォルト
+sourceUrl: 'https://qiita.com/...'  # 任意。出典（転載元）リンクを記事に表示
+sourceName: 'Qiita'        # 任意。出典リンクのラベル
 hasAffiliate: true         # アフィリリンクを含む記事は true → 冒頭に「PR」表記を自動表示
 ---
 ```
 
 MDX 本文では `<AffiliateLink href="...">` が利用できます
 （`rel="sponsored nofollow"` / `target="_blank"` / `referrerPolicy` を自動付与）。
+
+### Qiita 記事の取り込み（同期）
+
+Qiita の投稿をブログ記事として取り込めます。
+
+```bash
+pnpm import:qiita            # 既定ユーザー(aotatsu8)の記事を取得
+pnpm import:qiita <user>     # ユーザー指定
+```
+
+- [`scripts/import-qiita.mjs`](scripts/import-qiita.mjs) が Qiita API v2 で記事を取得し、
+  `content/blog/qiita-<記事ID>.mdx` を生成します（**再実行で上書き同期**。Qiita 側で削除された記事も追従）。
+- frontmatter の `sourceUrl` に元記事URLが入り、記事ページに「Qiita にも掲載しています」リンクを表示します。
+- MDX で誤解釈される `{ } <タグ`（コード外）は自動エスケープ。本文先頭の重複タイトル見出しは自動除去します。
+- 取り込み後は `pnpm build` で静的書き出しを再生成してください。
+
+> ⚠️ 取り込んだ MDX を手で編集しても、再 `import:qiita` で**上書きされます**。
+> 恒久的に手を入れたい記事は、ファイル名から `qiita-` プレフィックスを外して別 slug にしてください。
 
 ## アフィリエイト / ステマ規制対応
 

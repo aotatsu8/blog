@@ -1,0 +1,92 @@
+---
+title: 'Next.jsのメリット'
+description: 'Next.js の強みとメリット（比較で理解） 🚫 従来（Next.jsなし）の課題 ❌ ページごとのルーティング設定が面倒（React Routerの設定が必要） ❌ サーバー…'
+date: '2025-04-25'
+tags: ['Next.js']
+sourceUrl: 'https://qiita.com/aotatsu8/items/376ef1426a860c064c65'
+sourceName: 'Qiita'
+hasAffiliate: false
+---
+🚫 従来（Next.jsなし）の課題
+❌ ページごとのルーティング設定が面倒（React Routerの設定が必要）
+
+❌ サーバーサイドレンダリングは自前で構築が大変（Expressなどと組み合わせる必要）
+
+❌ パフォーマンス最適化が手間（画像最適化、コード分割などを自力で設定）
+
+❌ SEOに弱い（クライアントサイドレンダリングだとクローラーが読めない）
+
+❌ ビルド時と実行時のコードが複雑に分離しやすい
+
+## Next.js 導入後の改善ポイント
+### 1. 📁 ファイルベースルーティング
+
+Before: React Routerでルートを手動定義
+
+After: pages/ フォルダにファイルを置くだけで自動ルーティング
+```
+/pages/index.tsx       →  /
+/pages/about.tsx       →  /about
+/pages/blog/[id].tsx   →  /blog/1, /blog/2 ...（動的ルーティング）
+```
+→ ページ追加・保守が圧倒的に楽！
+
+###  2. ⚡ SSG & SSR によるパフォーマンス最適化
+Before: CSRのみ → 初回表示が遅くなりがち
+
+After:
+
+SSG（静的生成）→ 爆速表示＆CDNキャッシュOK
+
+SSR（動的レンダリング）→ 毎回最新データで表示
+```
+// SSG
+export async function getStaticProps() {
+  return { props: { posts: [] } };
+}
+
+// SSR
+export async function getServerSideProps() {
+  return { props: { user: {} } };
+}
+
+```
+→ ページごとに柔軟に選べる！
+
+### 3. 🔍 SEO対策に強い
+Before: CSRだとGoogleが内容を読み込めずSEOに弱い
+
+After: SSRやSSGでHTMLを返せるので、クローラーも正しく認識できる
+→ ブログ、企業ページ、ECサイトでも安心！
+
+### 4. 📦 画像最適化（Next/Image）
+Before: 手動で画像圧縮、レスポンシブ対応も工夫が必要
+
+After: \<Image /> コンポーネントで自動最適化（WebP変換、遅延読み込みなど）
+
+### 5. 🛠️ APIルートが使える
+Before: 別サーバー（Expressなど）でAPI構築が必要
+
+After: pages/api/ にファイルを置くだけでAPI完成！
+```
+// /pages/api/hello.ts
+export default function handler(req, res) {
+  res.status(200).json({ message: "Hello Next.js API!" });
+}
+```
+
+### 6. 🌍 デプロイが簡単（Vercelとの親和性）
+VercelにGitHub連携すれば即デプロイ
+
+CI/CD、画像最適化、キャッシュなども自動でやってくれる
+
+## 🏁 結論：Next.jsで何が変わる？
+
+
+| 比較項目 | Reactのみ（Nextなし） | Next.jsあり |
+|:-:|:-:|:-:|
+| ルーティング  | 手動設定が必要  | ファイル名ベースで自動  |
+| SEO対応  | 弱い（CSR）  | 強い（SSR/SSGで対応）  |
+| サーバーとの連携  | 別構築が必要  | APIルート内蔵  |
+| 表示速度  | 初回遅いことがある  | SSGで爆速、SSRで最新表示が可能  |
+| デプロイ  | 設定が煩雑  |  Vercelと連携で簡単 |

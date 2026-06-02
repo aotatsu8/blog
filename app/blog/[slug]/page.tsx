@@ -88,6 +88,20 @@ export default async function BlogPostPage({
               ))}
             </div>
           )}
+          {frontmatter.sourceUrl && (
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">
+              この記事は{' '}
+              <a
+                href={frontmatter.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sky-600 underline underline-offset-2 hover:text-sky-500 dark:text-sky-400"
+              >
+                {frontmatter.sourceName ?? '元記事'}
+              </a>{' '}
+              にも掲載しています。
+            </p>
+          )}
         </header>
 
         <div className="prose prose-neutral max-w-none dark:prose-invert">

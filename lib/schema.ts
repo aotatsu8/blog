@@ -17,6 +17,10 @@ export const blogFrontmatterSchema = z.object({
   updated: dateString.optional(),
   tags: z.array(z.string()).default([]),
   ogImage: z.string().optional(),
+  /** 外部の初出記事URL（例: Qiita からの転載元）。設定すると記事に出典リンクを表示する */
+  sourceUrl: z.url().optional(),
+  /** 出典サービス名の表示用ラベル（例: "Qiita"） */
+  sourceName: z.string().optional(),
   /** アフィリエイトリンクを含む記事は true。PR 表記を自動表示する */
   hasAffiliate: z.boolean().default(false),
   /** 一覧から除外したい場合に true */

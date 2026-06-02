@@ -1,0 +1,49 @@
+name: Sync Qiita to Blog
+
+# Qiita の投稿を定期取得し、差分があれば content/blog にコミット＆push する。
+# push をトリガーに Cloudflare Pages が自動でビルド・デプロイする想定。
+
+on:
+  schedule:
+    # 毎日 00:00 UTC = 09:00 JST に実行
+    - cron: '0 0 * * *'
+  # GitHub の Actions 画面から手動実行も可能にする
+  workflow_dispatch:
+
+# 同時実行を抑止（前回の実行が走っていれば待たずに直近を優先）
+concurrency:
+  group: sync-qiita
+  cancel-in-progress: false
+
+permissions:
+  # GITHUB_TOKEN にコミット push 権限を付与
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # import スクリプトは Node 標準 API のみで動くため依存インストール不要
+      - name: Import Qiita articles
+        run: node scripts/import-qiita.mjs
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/blog
+          if git diff --staged --quiet; then
+            echo "No changes from Qiita. Skipping commit."
+          else
+            git commit -m "chore: sync Qiita articles [skip ci]"
+            git push
+            echo "Pushed updated Qiita articles."
+          fi

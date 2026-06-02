@@ -1,0 +1,101 @@
+---
+title: 'SWR とは'
+description: 'SWR とは、Next.js を開発している Vercel 社 が公開している React 用の データフェッチング（データ取得）ライブラリ です。 正式には “Stale-Whi…'
+date: '2025-10-07'
+tags: ['SWR']
+sourceUrl: 'https://qiita.com/aotatsu8/items/9e82a8341aa3074cdaa7'
+sourceName: 'Qiita'
+hasAffiliate: false
+---
+# SWR とは、Next.js を開発している Vercel 社 が公開している React 用の データフェッチング（データ取得）ライブラリ です。
+正式には “Stale-While-Revalidate” の略で、「古いデータをすぐ表示しつつ、裏で最新データを取得して更新する」という意味のキャッシュ戦略を採用しています。
+
+**🔍 基本の考え方**
+
+通常のAPI取得（fetchなど）だと、
+1. APIを呼ぶ
+2. 結果が返ってくるまで画面は「読み込み中」
+3. 結果が来たら表示
+
+という流れですが、SWRを使うとこうなります👇
+
+1. キャッシュにあるデータをすぐに表示（＝画面が速い）
+2. 同時に新しいデータをバックグラウンドで取得
+3. 新しいデータが返ってきたら自動的に画面を更新
+
+これにより、高速な表示とデータの鮮度を両立します。
+
+## 1. SWRの使い方
+まずはプロジェクトにSWRを入れます。
+
+`npm install swr` または `yarn add swr`
+
+## 2.基本の使い方
+SWRの基本構文
+`useSWR(key, fetcher, options)
+`
+
+![スクリーンショット 2025-10-07 22.25.33.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/756717/ccd835d2-450b-42da-8e05-77bf0fa28a7d.png)
+`/api/user` が「キー（データの識別子）」
+
+`fetcher` が実際にデータを取得する関数
+
+`data` に結果、`error` にエラー、`isLoading` にローディング状態が入る
+
+## 3.キャッシュと自動再取得
+
+SWRは一度取得したデータをキャッシュします。
+ページを行き来しても再取得せず、すぐに前回データを表示。
+
+また、
+
+画面に戻った時（フォーカス）
+
+ネットワークが再接続された時
+
+などに、自動で最新データを再取得します。
+
+これが「Stale（古いデータ）While Revalidate（再検証）」の仕組みです。
+
+## 4.fetcher関数を共通化する
+毎回 fetcher を書くのが面倒なら、_app.tsx で共通設定できます
+
+![スクリーンショット 2025-10-07 22.29.47.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/756717/9c8468d1-d097-47ee-b026-ece783896c5a.png)
+これで各ページで `fetcher` を書かなくてもOK！
+
+## 5.データを手動で更新する（mutate）
+
+たとえば、フォーム送信後にデータを更新したいとき![スクリーンショット 2025-10-07 22.33.01.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/756717/e584fa64-edf2-4f94-9a5b-cf357fd89158.png)
+`mutate('/api/todos')` を呼ぶと、
+→ `/api/todos` のデータが即時更新されます！
+
+## 6.オプションで挙動をカスタマイズ
+SWRの基本構文
+`useSWR(key, fetcher, options)
+`
+この3つ目の options に設定を渡すことで、
+「どのタイミングで再取得するか」「どれくらいキャッシュを保持するか」などを細かく調整できます。
+| オプション名 | 型 | デフォルト | 説明 |
+|:---|:---|:---|---|
+| refreshInterval | number | 0 | 定期的に自動再取得する間隔（ms）|
+| revalidateOnFocus | boolean | true | タブを戻したときに自動再取得する |
+| revalidateOnReconnect | boolean | true | ネットワークが戻った時に再取得 |
+| dedupingInterval | number | 200 | 同じキーでの短時間リクエストをまとめる間隔 |
+| fallbackData | any | undefined | 初期表示時の仮データ（サーバーからまだ取得前） |
+| errorRetryCount | number | 5 | エラー時の再試行回数 |
+| errorRetryInterval | number | 5000 | 再試行する間隔（ms） |
+| shouldRetryOnError | boolean | true | エラー時に再取得を試みるか |
+| revalidateIfStale | boolean | true | キャッシュが古ければ再取得する |
+| loadingTimeout | number | undefined | ローディング状態のタイムアウト（カスタム用） |
+
+
+![スクリーンショット 2025-10-07 22.34.13.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/756717/c474e276-51dd-4405-8ffe-815231dbb27f.png)
+
+## 7. 使うときのコツまとめ
+| やりたいこと | 方法 |
+|:---|:---|
+| シンプルにAPIを取得 | useSWR('/api/foo', fetcher) |
+| 更新後にデータ再取得 | mutate('/api/foo') |
+| 一定間隔で再取得 | refreshInterval オプション |
+| 画面戻ったときに更新 | デフォルトで自動実行 |
+| フォーカス時の再取得を止めたい | revalidateOnFocus: false |

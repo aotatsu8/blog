@@ -1,0 +1,95 @@
+---
+title: '状態管理ライブラリの比較早見表'
+description: '状態管理ライブラリ比較：Zustand / Recoil / Redux Toolkit ✅ ざっくり比較表 項目 Zustand Recoil Redux Toolkit ---…'
+date: '2025-04-29'
+tags: ['redux', 'Recoil', 'zustand']
+sourceUrl: 'https://qiita.com/aotatsu8/items/e6fc6b15c216c9378320'
+sourceName: 'Qiita'
+hasAffiliate: false
+---
+## ✅ ざっくり比較表
+
+| 項目               | Zustand                         | Recoil                            | Redux Toolkit                     |
+|--------------------|----------------------------------|------------------------------------|-----------------------------------|
+| 学習コスト         | 低（直感的で簡単）               | 中（依存グラフの理解が必要）        | 中〜高（設計と型定義がやや重い） |
+| 使用難易度         | やさしい                         | 普通                              | やや難しい                        |
+| 初期構成の手間     | ほぼ不要                         | ほぼ不要                           | 多め（sliceやstoreなど準備が必要）|
+| 状態の依存関係管理 | △（手動で書く）                  | ◎（selectorで依存関係を解決）       | △（手動で関数を書く）            |
+| TypeScript対応     | ◎（型推論が効きやすい）          | ◎（型推論しやすい）                 | ◎（強力だが少し複雑）            |
+| 軽量性             | ◎（約3KB）                       | ○（軽量）                          | △（比較的大きめ）               |
+| 状態の永続化       | ◎（middlewareで簡単）            | ○（外部ライブラリが必要）           | △（redux-persist等の導入必要）   |
+| 開発対象規模       | 小〜中規模                       | 中規模                             | 中〜大規模                        |
+| 非同期処理         | 自由（任意の方法でOK）           | 外部で対応                          | ◎（createAsyncThunk）           |
+
+---
+
+## 🐻 Zustand
+
+- **超軽量 & シンプル**な状態管理
+- Reactに依存せず使える
+- `create` 関数で状態とアクションを定義
+- localStorage連携、middleware、Devtools対応も容易
+
+```ts
+// Zustand ストア例
+import { create } from 'zustand';
+
+const useStore = create((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+}));
+```
+
+## 🧠 Recoil
+- Facebook製の**依存関係に強い状態管理ライブラリ**
+
+- atom で状態を定義し、selector で派生状態や非同期処理を管理
+
+- React専用
+
+```ts
+// Recoil ストア例
+import { atom, selector } from 'recoil';
+
+export const countState = atom({
+  key: 'count',
+  default: 0,
+});
+
+export const doubleCount = selector({
+  key: 'doubleCount',
+  get: ({ get }) => get(countState) * 2,
+});
+```
+
+## 🛠 Redux Toolkit
+- Redux公式が推奨する**効率化された状態管理**
+
+- ```createSlice```, ```createAsyncThunk``` などが登場し、旧Reduxの冗長性を大幅に改善
+
+- 最も**堅牢・大規模開発に向いている**
+
+```ts
+// Redux Toolkit slice 例
+import { createSlice } from '@reduxjs/toolkit';
+
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: { value: 0 },
+  reducers: {
+    increment: (state) => { state.value += 1 },
+  },
+});
+
+export const { increment } = counterSlice.actions;
+export default counterSlice.reducer;
+
+```
+
+## 🔚 結論：どれを選ぶべき？
+
+| ケース                          | 推奨ライブラリ       |
+|-------------------------------|----------------------|
+| 小規模アプリ・初学者向け       | ✅ Zustand           |
+| 派生データや依存状態が多い     | ✅ Recoil            |
+| チーム開発・大規模開発         | ✅ Redux Toolkit     |

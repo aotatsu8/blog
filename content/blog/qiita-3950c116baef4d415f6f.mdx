@@ -1,0 +1,219 @@
+---
+title: 'approuterになることによって変わること'
+description: 'approuterになることによって変わること Next.js 13.4以降、 approuterを導入することで、Next.jsアプリケーションの開発においていくつかの重要な変化…'
+date: '2025-04-25'
+updated: '2026-03-13'
+tags: ['AppRouter', 'PageRouter']
+sourceUrl: 'https://qiita.com/aotatsu8/items/3950c116baef4d415f6f'
+sourceName: 'Qiita'
+hasAffiliate: false
+---
+Next.js 13.4以降、
+approuterを導入することで、Next.jsアプリケーションの開発においていくつかの重要な変化がもたらされます。主な変更点は以下の通りです。
+
+## 1. ルーティングの仕組み
+
+### Pages Router
+pages ディレクトリベースで、ファイルシステムがそのままURL構造に対応。（例：pages/about.js → /about）
+### App Router
+app ディレクトリベースで、コンポーネントを特別なファイル (page.js) にエクスポートしてルートを定義。より柔軟なルーティング構造やコンポーネント単位での機能分割が可能。
+## 2. レイアウト
+
+Pages Router: 共通レイアウトは _app.js で定義する必要がありました。
+App Router: layout.js ファイルをディレクトリ内に配置するだけで、そのディレクトリ以下のすべてのルートで共有されるレイアウトを定義可能。ネストされたレイアウトもサポート。
+## 3. データの取得
+
+### Pages Router
+getServerSideProps、getStaticProps、getStaticPaths などの専用関数を使用。
+### App Router
+より柔軟なデータ取得方法。
+Server Components: サーバー上で実行されるコンポーネント内で async/await を使用して直接データを取得可能。
+fetch APIの拡張: Next.jsの拡張された fetch API で、データのキャッシュや再検証を細かく制御可能。
+Route Handlers: APIエンドポイントを app ディレクトリ内で直接定義可能。
+## 4. Server Components
+
+App Routerの大きな特徴。UIの一部をサーバー上でレンダリングし、クライアント側のJavaScript量を削減。初期ロード時間の改善やインタラクティブ性の向上に貢献。
+サーバーでレンダリングされるコンポーネントです。
+
+特徴
+・ブラウザにJSが送られない
+・データ取得に向いている
+・SEOに強い
+・軽い
+```
+例
+async function Page() {
+  const data = await fetch("/api/data")
+  return <div>{data.title}</div>
+}
+```
+## 5. Client Components
+
+従来のReactコンポーネントは引き続き利用可能。クライアントサイドでJavaScriptを実行し、ステートやイベントハンドラーを持つ。'use client' ディレクティブをファイルの先頭に追加する必要あり。
+ブラウザ側で動くコンポーネントです。
+
+特徴
+・stateが使える
+・イベント処理ができる
+・useEffectが使える
+
+```
+例
+"use client"
+
+import { useState } from "react"
+
+export default function Counter() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      {count}
+    </button>
+  )
+}
+```
+## 6. コロケーション:
+
+コンポーネント、データ取得ロジック、テストなどを同じディレクトリ内に配置しやすく、コードの整理や管理が容易に。
+## 7. より細やかな制御:
+
+ルーティング、データ取得、キャッシュ戦略など、アプリケーションの様々な側面において、より細やかな制御を開発者に提供。
+## まとめ:
+
+approuterにより、よりモダンで柔軟なNext.jsアプリケーション開発が実現します。Server Componentsによるパフォーマンス向上、強力なルーティングとレイアウト、洗練されたデータ取得などが主なメリットです。
+
+## 以下使用例
+
+Next.js データ取得方法の比較
+Next.jsでは、Pages RouterとApp Routerでデータの取得方法が大きく異なります。以下に、それぞれの方法と、主な関数の対応についてまとめます。
+
+Pages Router (pages ディレクトリ)
+Pages Routerでは、ページコンポーネント内で特定の関数をエクスポートすることで、データの取得やレンダリング方法を制御していました。
+
+getServerSideProps
+
+　リクエストごとにサーバー側でデータを取得し、ページをレンダリングします。
+
+　ユーザー認証が必要なページや、頻繁にデータが更新されるページに適しています。
+
+　例:
+```
+export async function getServerSideProps(context) {
+  const res = await fetch(`https://.../data`);
+  const data = await res.json();
+  return {
+    props: { data },
+  };
+}
+```
+getStaticProps
+
+　ビルド時にデータを取得し、ページを静的に生成します。
+
+　ブログ記事や商品詳細ページなど、比較的更新頻度の低いページに適しています。
+
+　オプションで revalidate を設定することで、バックグラウンドでページを更新できます (ISR: Incremental Static Regeneration)。
+
+例:
+```
+export async function getStaticProps() {
+  const res = await fetch(`https://.../data`);
+  const data = await res.json();
+  return {
+    props: { data },
+    revalidate: 60, // 60秒ごとに更新
+  };
+}
+```
+getStaticPaths
+
+　getStaticProps と組み合わせて、動的なルート ([id].js など) の静的生成に必要なパスを定義します。
+
+　例:
+```
+export async function getStaticPaths() {
+  const res = await fetch(`https://.../ids`);
+  const ids = await res.json();
+  const paths = ids.map((id) => ({ params: { id: id.toString() } }));
+  return {
+    paths,
+    fallback: false, // パスに含まれないIDへのアクセスは404
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const res = await fetch(`https://.../data/${params.id}`);
+  const data = await res.json();
+  return {
+    props: { data },
+  };
+}
+```
+App Router (app ディレクトリ)
+App Routerでは、Server ComponentsとClient Componentsの概念が導入され、データの取得方法がより柔軟になりました。
+
+Server Componentsでのデータ取得
+
+　Server Components内で、async/await を使用して直接データを取得できます。
+
+　これにより、サーバーサイドでデータを取得し、レンダリングに必要な最小限のHTMLをクライアントに送信できます。
+
+　例:
+```
+import { db } from './lib/db'; // 例: Prismaクライアント
+
+async function MyPage() {
+  const data = await db.user.findMany(); // データベースからデータを取得
+  return (
+    <div>
+      {data.map(user => (
+        <div key={user.id}>{user.name}</div>
+      ))}
+    </div>
+  );
+}
+export default MyPage;
+```
+fetch APIの拡張
+
+　App Routerでは、Next.js拡張された fetch APIが提供され、キャッシュや再検証を細かく制御できます。
+
+　例:
+```
+async function getData() {
+  const res = await fetch('https://.../data', {
+    next: { revalidate: 60 }, // 60秒ごとにキャッシュを更新
+  });
+  // レスポンスがOKでなければエラーをスロー
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return res.json();
+}
+
+async function MyPage() {
+  const data = await getData();
+  // ...
+}
+```
+generateStaticParams
+
+　動的ルートの静的生成に必要なパスを定義します。getStaticPaths と似た役割を果たします。
+
+例:
+```
+export async function generateStaticParams() {
+  const res = await fetch('https://.../posts');
+  const posts = await res.json();
+  return posts.map((post) => ({
+    id: post.id.toString(),
+  }));
+}
+
+async function Page({ params }: { params: { id: string } }) {
+  const res = await fetch(`https://.../posts/${params.id}`);
+  const post = await res.json();
+  // ...
+}
+```
