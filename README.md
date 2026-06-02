@@ -72,13 +72,20 @@ title: 'タイトル'
 description: '説明（meta description / OGP に使用）'
 date: '2026-05-20'
 updated: '2026-05-30'      # 任意
-tags: ['Next.js', 'TypeScript']
+category: 'IT'             # 必須。絞り込みカテゴリ（IT / 日常 / 旅 / グルメ / work から1つ）
+tags: ['Next.js', 'TypeScript']  # 任意。記事内に表示する細かいタグ（絞り込みには非使用）
 ogImage: '/og/foo.png'     # 任意。未指定はサイト共通デフォルト
 sourceUrl: 'https://qiita.com/...'  # 任意。出典（転載元）リンクを記事に表示
 sourceName: 'Qiita'        # 任意。出典リンクのラベル
 hasAffiliate: true         # アフィリリンクを含む記事は true → 冒頭に「PR」表記を自動表示
 ---
 ```
+
+> **カテゴリ（`category`）と絞り込み**
+> 一覧の絞り込みは固定の5カテゴリ **`IT` / `日常` / `旅` / `グルメ` / `work`**（[`lib/schema.ts`](lib/schema.ts) の `BLOG_CATEGORIES`）で行います。
+> 各記事に1つ必須です。**Qiita から取り込んだ記事は自動的に `IT`** になります。
+> 手書き記事は投稿時に適切なカテゴリを指定してください（未指定や5種以外はビルドエラー）。
+> 細かい内容ラベルが必要なときは `tags` を併用できます（記事内表示のみ）。
 
 MDX 本文では `<AffiliateLink href="...">` が利用できます
 （`rel="sponsored nofollow"` / `target="_blank"` / `referrerPolicy` を自動付与）。

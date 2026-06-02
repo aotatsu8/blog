@@ -81,13 +81,14 @@ export default async function BlogPostPage({
             )}
           </div>
           <h1 className="text-3xl font-bold tracking-tight">{frontmatter.title}</h1>
-          {frontmatter.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {frontmatter.tags.map((tag) => (
-                <TagBadge key={tag}>{tag}</TagBadge>
-              ))}
-            </div>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded bg-sky-100 px-2 py-0.5 text-xs font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">
+              {frontmatter.category}
+            </span>
+            {frontmatter.tags.map((tag) => (
+              <TagBadge key={tag}>{tag}</TagBadge>
+            ))}
+          </div>
           {frontmatter.sourceUrl && (
             <p className="text-sm text-neutral-500 dark:text-neutral-400">
               この記事は{' '}

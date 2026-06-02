@@ -4,7 +4,7 @@ import { getAllContent } from '@/lib/content'
 
 export default function HomePage() {
   // 最新記事を数件だけトップに表示する（ビルド時取得）
-  const recentPosts = getAllContent('blog').slice(0, 3)
+  const recentPosts = getAllContent('blog').slice(0, 2)
 
   return (
     <div className="space-y-16">

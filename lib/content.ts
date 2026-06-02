@@ -74,12 +74,3 @@ export function getContentBySlug<T extends ContentType>(
 export function getContentSlugs(type: ContentType): string[] {
   return readType(type).map((item) => item.slug)
 }
-
-/** blog 全件からユニークなタグ一覧を抽出して返す */
-export function getAllBlogTags(): string[] {
-  const tags = new Set<string>()
-  for (const item of getAllContent('blog')) {
-    for (const tag of item.frontmatter.tags) tags.add(tag)
-  }
-  return [...tags].sort()
-}

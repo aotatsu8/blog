@@ -10,11 +10,21 @@ const dateString = z
   .string()
   .refine((v) => !Number.isNaN(Date.parse(v)), { message: '日付として解釈できません' })
 
+/**
+ * ブログ記事の絞り込み用カテゴリ（固定）。一覧のフィルタはこの5種で行う。
+ * Qiita から取り込んだ記事は強制的に 'IT'、手書き記事は投稿時に1つ指定する。
+ */
+export const BLOG_CATEGORIES = ['IT', '日常', '旅', 'グルメ', 'work'] as const
+export type BlogCategory = (typeof BLOG_CATEGORIES)[number]
+
 export const blogFrontmatterSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   date: dateString,
   updated: dateString.optional(),
+  /** 一覧の絞り込みに使う固定カテゴリ（必須・1つ） */
+  category: z.enum(BLOG_CATEGORIES),
+  /** 記事内に表示する細かいタグ（任意・複数）。絞り込みには使わない */
   tags: z.array(z.string()).default([]),
   ogImage: z.string().optional(),
   /** 外部の初出記事URL（例: Qiita からの転載元）。設定すると記事に出典リンクを表示する */

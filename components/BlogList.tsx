@@ -10,6 +10,9 @@ export type BlogListItem = {
   title: string
   description: string
   date: string
+  /** 絞り込み用の固定カテゴリ */
+  category: string
+  /** 表示用の細かいタグ */
   tags: string[]
   hasAffiliate: boolean
 }
@@ -24,42 +27,46 @@ function formatDate(iso: string): string {
 }
 
 /**
- * 記事一覧 + タグフィルタ。静的書き出しと両立させるため、
+ * 記事一覧 + カテゴリ絞り込み。静的書き出しと両立させるため、
  * サーバーで描画済みの全記事をクライアント側で絞り込む方式にしている。
  */
-export function BlogList({ posts, tags }: { posts: BlogListItem[]; tags: string[] }) {
+export function BlogList({
+  posts,
+  categories,
+}: {
+  posts: BlogListItem[]
+  categories: readonly string[]
+}) {
   const [active, setActive] = useState<string | null>(null)
 
   const filtered = useMemo(
-    () => (active ? posts.filter((p) => p.tags.includes(active)) : posts),
+    () => (active ? posts.filter((p) => p.category === active) : posts),
     [posts, active],
   )
 
   return (
     <div className="space-y-8">
-      {tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setActive(null)}
+          aria-pressed={active === null}
+          className={chipClass(active === null)}
+        >
+          すべて
+        </button>
+        {categories.map((category) => (
           <button
+            key={category}
             type="button"
-            onClick={() => setActive(null)}
-            aria-pressed={active === null}
-            className={chipClass(active === null)}
+            onClick={() => setActive(category)}
+            aria-pressed={active === category}
+            className={chipClass(active === category)}
           >
-            すべて
+            {category}
           </button>
-          {tags.map((tag) => (
-            <button
-              key={tag}
-              type="button"
-              onClick={() => setActive(tag)}
-              aria-pressed={active === tag}
-              className={chipClass(active === tag)}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-      )}
+        ))}
+      </div>
 
       <ul className="space-y-6">
         {filtered.map((post) => (
@@ -68,6 +75,9 @@ export function BlogList({ posts, tags }: { posts: BlogListItem[]; tags: string[
               <Link href={`/blog/${post.slug}/`} className="block">
                 <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                   <time dateTime={post.date}>{formatDate(post.date)}</time>
+                  <span className="rounded bg-sky-100 px-1.5 py-0.5 font-medium text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">
+                    {post.category}
+                  </span>
                   {post.hasAffiliate && (
                     <span className="rounded bg-amber-500 px-1.5 py-0.5 font-bold text-white">
                       PR

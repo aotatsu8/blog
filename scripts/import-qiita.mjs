@@ -98,6 +98,8 @@ function toMdx(item) {
     `description: ${yamlStr(makeDescription(item.body))}`,
     `date: '${created}'`,
     ...(updated !== created ? [`updated: '${updated}'`] : []),
+    // Qiita からの取り込みは絞り込みカテゴリを強制的に 'IT' にする
+    `category: 'IT'`,
     `tags: [${tags}]`,
     `sourceUrl: ${yamlStr(item.url)}`,
     `sourceName: 'Qiita'`,
