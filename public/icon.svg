@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="手描き風の犬">
+  <!-- 背景の角丸スクエア（小さくても視認できるよう淡い背景を敷く） -->
+  <rect width="64" height="64" rx="14" fill="#eef2f7" />
+
+  <g fill="#ffffff" stroke="#6b655d" stroke-width="1.6"
+     stroke-linecap="round" stroke-linejoin="round">
+    <!-- しっぽ（もこもこ・右上に持ち上がる） -->
+    <path d="M50 24
+             q5 -2 7 3
+             q2 5 -2 8
+             q-4 3 -8 0
+             q-3 -3 -1 -7
+             q1 -3 4 -4 z" />
+
+    <!-- 胴体 -->
+    <ellipse cx="40" cy="39" rx="15" ry="10" />
+
+    <!-- 4本の足（輪郭のみ・原画のように分かれて見える） -->
+    <g fill="none">
+      <path d="M30 46 v4 q0 3 2.6 3 q2.6 0 2.6 -3 v-4" />
+      <path d="M37 47 v4 q0 3 2.6 3 q2.6 0 2.6 -3 v-4" />
+      <path d="M45 47 v4 q0 3 2.6 3 q2.6 0 2.6 -3 v-4" />
+      <path d="M51 46 v4 q0 3 2.6 3 q2.6 0 2.6 -3 v-4" />
+    </g>
+
+    <!-- 垂れ耳（顔の左右、後ろから垂れる） -->
+    <ellipse cx="10.5" cy="34" rx="4.6" ry="8.2" />
+    <ellipse cx="32.5" cy="35" rx="4.6" ry="8.2" />
+
+    <!-- 顔（大きな丸い頭） -->
+    <circle cx="21" cy="30" r="13" />
+  </g>
+
+  <!-- 顔のパーツ -->
+  <g fill="#1f2937">
+    <!-- 目 -->
+    <ellipse cx="16.6" cy="29" rx="1.9" ry="2.4" />
+    <ellipse cx="25" cy="28" rx="1.9" ry="2.4" />
+    <!-- 鼻 -->
+    <ellipse cx="20.8" cy="33.6" rx="2.1" ry="1.7" />
+  </g>
+  <!-- 目のハイライト -->
+  <g fill="#ffffff">
+    <circle cx="15.9" cy="28.1" r="0.6" />
+    <circle cx="24.3" cy="27.1" r="0.6" />
+  </g>
+  <!-- 口（ニコッとした笑顔） -->
+  <g fill="none" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round">
+    <path d="M20.8 35.3 Q18.6 38.4 16.4 36.6" />
+    <path d="M20.8 35.3 Q23 38.4 25.2 36.6" />
+  </g>
+</svg>

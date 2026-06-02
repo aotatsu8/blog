@@ -12,9 +12,20 @@ export default function HomePage() {
         <p className="text-sm font-medium text-sky-600 dark:text-sky-400">
           Frontend Engineer / Freelance
         </p>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {siteConfig.name}
-        </h1>
+        <div className="flex items-center gap-3">
+          {/* サイトのロゴマーク（favicon と共通の SVG） */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/icon.svg"
+            alt=""
+            width={48}
+            height={48}
+            className="rounded-xl sm:h-14 sm:w-14"
+          />
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            {siteConfig.name}
+          </h1>
+        </div>
         <p className="max-w-prose whitespace-pre-line leading-relaxed text-neutral-600 dark:text-neutral-300">
           {siteConfig.description}
         </p>
