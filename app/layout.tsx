@@ -23,8 +23,13 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     url: siteConfig.url,
     siteName: siteConfig.name,
+    // サイト共通のデフォルト OGP 画像（各ページが個別指定すれば上書きされる）
+    images: [{ url: siteConfig.defaultOgImage, width: 1200, height: 630 }],
   },
-  twitter: { card: 'summary_large_image' },
+  twitter: {
+    card: 'summary_large_image',
+    images: [siteConfig.defaultOgImage],
+  },
 }
 
 export default function RootLayout({

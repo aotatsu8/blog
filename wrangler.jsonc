@@ -1,11 +1,14 @@
 {
   // このサイトは Next.js の静的書き出し（output: 'export' → out/）。
-  // Cloudflare の Worker で out/ を「静的アセット」としてそのまま配信する。
-  // この設定があると wrangler deploy は OpenNext(SSR) への自動移行を行わず、out/ を配信する。
+  // Worker(worker/index.ts) で /go/:id のリダイレクトを処理し、それ以外は out/ を静的配信する。
+  // この設定があると wrangler deploy は OpenNext(SSR) への自動移行を行わない。
   "name": "blog",
   "compatibility_date": "2026-06-02",
+  "main": "worker/index.ts",
   "assets": {
     "directory": "./out",
+    // Worker から静的アセットを取得するためのバインディング
+    "binding": "ASSETS",
     // 未知のパスは out/404.html を返す（静的書き出しの 404 ページ）
     "not_found_handling": "404-page"
   }

@@ -58,7 +58,8 @@ Qiita API v2 から記事を取得し `content/blog/qiita-<記事ID>.mdx` を生
 ## デプロイ（Cloudflare Worker の静的アセット配信）
 
 Pages ではなく **Worker** として配信している。GitHub push で自動ビルド（Build: `pnpm build` / Deploy: `npx wrangler deploy`）。
-- **`wrangler.jsonc` は必須**。`assets.directory: ./out` で `out/` をそのまま配信する。これが無いと `wrangler deploy` が Next.js を検知して **OpenNext(SSR) へ自動移行**し、`output: 'export'` と噛み合わずビルドが失敗する。
+- **`wrangler.jsonc` は必須**。`main: worker/index.ts` ＋ `assets.directory: ./out`（binding `ASSETS`）。これが無いと `wrangler deploy` が Next.js を検知して **OpenNext(SSR) へ自動移行**し、`output: 'export'` と噛み合わずビルドが失敗する。
+- `worker/index.ts` が `/go/:id` を `LINKS` のアフィリエイトURLへ 302 リダイレクト（リンク一括管理用）、それ以外は `env.ASSETS` で静的配信。
 - 本番URL: https://blog.aotatsu7.workers.dev
 
 ## 作業上の慣習
