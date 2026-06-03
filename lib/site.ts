@@ -38,7 +38,8 @@ export const siteConfig = {
    * Google フォーム → 送信 → < >（埋め込みHTML）の iframe src をそのまま貼る。
    * 例: 'https://docs.google.com/forms/d/e/XXXX/viewform?embedded=true'
    */
-  googleFormEmbedUrl: '',
+  googleFormEmbedUrl:
+    'https://docs.google.com/forms/d/e/1FAIpQLSc8Hdd_1DGqjbNDKxCcaErOHMDZMzFT68I7EulqtWlh3Ri95A/viewform?embedded=true',
   /**
    * お問い合わせフォームの送信先（Formspree 等の POST エンドポイント）。
    * Google フォーム未設定時のフォーム。空文字ならメール問い合わせ（mailto）にフォールバックする。
