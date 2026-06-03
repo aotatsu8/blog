@@ -41,9 +41,17 @@ function readType<T extends ContentType>(type: T): ContentItem<T>[] {
       )
     }
 
+    const frontmatter = parsed.data as FrontmatterMap[T]
+
+    // ステマ規制対応: 本文にアフィリエイト系コンポーネントを含む記事は、
+    // frontmatter の指定に関わらず hasAffiliate を true にして PR 表記を強制する。
+    if (type === 'blog' && /<(AffiliateLink|ProductCard)\b/.test(content)) {
+      ;(frontmatter as BlogFrontmatter).hasAffiliate = true
+    }
+
     return {
       slug,
-      frontmatter: parsed.data as FrontmatterMap[T],
+      frontmatter,
       body: content,
     }
   })

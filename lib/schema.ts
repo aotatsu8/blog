@@ -31,7 +31,11 @@ export const blogFrontmatterSchema = z.object({
   sourceUrl: z.url().optional(),
   /** 出典サービス名の表示用ラベル（例: "Qiita"） */
   sourceName: z.string().optional(),
-  /** アフィリエイトリンクを含む記事は true。PR 表記を自動表示する */
+  /**
+   * アフィリエイトリンクを含む記事は true で PR 表記を表示する。
+   * 明示しなくても、本文に <AffiliateLink> / <ProductCard> があれば
+   * lib/content.ts が自動で true にする（書き忘れ防止）。
+   */
   hasAffiliate: z.boolean().default(false),
   /** 一覧から除外したい場合に true */
   draft: z.boolean().default(false),
