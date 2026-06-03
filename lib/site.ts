@@ -25,7 +25,7 @@ export const siteConfig = {
    * GA4 測定ID（G-XXXXXXXXXX）。環境変数 NEXT_PUBLIC_GA_ID があれば優先。
    * 無ければここに直接書いてもよい（測定IDは公開情報なので秘匿不要）。空なら GA 無効。
    */
-  gaId: process.env.NEXT_PUBLIC_GA_ID || '',
+  gaId: process.env.NEXT_PUBLIC_GA_ID || 'G-XXCWRM8YRX',
   /** OGP のデフォルト画像（/public 配下の静的画像を指す） */
   defaultOgImage: '/og-default.png',
   author: {
