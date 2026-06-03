@@ -31,15 +31,33 @@ export const siteConfig = {
     // TODO: 実際の Qiita ユーザーページURLに差し替える
     qiita: 'https://qiita.com/aotatsu8',
   },
+  /** 問い合わせ用メールアドレス（/contact で使用。専用アドレスに変更推奨） */
+  email: 'aotatsu7@gmail.com',
+  /**
+   * お問い合わせフォームの送信先（Formspree 等の POST エンドポイント）。
+   * 空文字ならメール問い合わせ（mailto）にフォールバックする。
+   * 例: 'https://formspree.io/f/xxxxxxx'
+   */
+  contactFormAction: '',
   /** ステマ規制対応: サイト共通のアフィリエイト利用開示文 */
   affiliateDisclosure:
     '当サイトはアフィリエイトプログラム（Amazonアソシエイト等）を利用しており、一部のリンクから収益を得ています。',
 } as const
 
+/** Amazonアソシエイト・プログラム規約で表示が必須の文言 */
+export const amazonAssociateDisclosure = `Amazonのアソシエイトとして、${siteConfig.name}は適格販売により収入を得ています。`
+
 /** ヘッダー/フッターのナビゲーション項目 */
 export const navItems = [
   { href: '/blog/', label: 'Blog' },
   { href: '/about/', label: 'About' },
+] as const
+
+/** フッターに置く規約・運営関連ページ */
+export const legalNavItems = [
+  { href: '/about/', label: '運営者情報' },
+  { href: '/privacy/', label: 'プライバシーポリシー' },
+  { href: '/contact/', label: 'お問い合わせ' },
 ] as const
 
 /** 相対パスをサイト絶対 URL に変換する */
