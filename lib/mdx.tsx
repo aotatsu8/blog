@@ -4,6 +4,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypePrettyCode, { type Options as PrettyCodeOptions } from 'rehype-pretty-code'
 import type { ComponentType } from 'react'
 import { AffiliateLink } from '@/components/AffiliateLink'
+import { ProductCard } from '@/components/ProductCard'
 import { PrBadge } from '@/components/PrBadge'
 
 /**
@@ -20,6 +21,7 @@ const prettyCodeOptions: PrettyCodeOptions = {
 /** MDX 本文から参照できるカスタムコンポーネント */
 const mdxComponents: Record<string, ComponentType<any>> = {
   AffiliateLink,
+  ProductCard,
   PrBadge,
 }
 
