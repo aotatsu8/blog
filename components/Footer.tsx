@@ -14,17 +14,29 @@ export function Footer() {
           </Link>
         </p>
 
-        {/* 規約・運営関連ページ（ASP審査・法令対応の導線） */}
+        {/* 規約・運営関連リンク（お問い合わせは Google フォームを別タブで開く） */}
         <nav className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {legalNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="hover:text-neutral-700 dark:hover:text-neutral-200"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {legalNavItems.map((item) =>
+            item.external ? (
+              <a
+                key={item.label}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-neutral-700 dark:hover:text-neutral-200"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="hover:text-neutral-700 dark:hover:text-neutral-200"
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">

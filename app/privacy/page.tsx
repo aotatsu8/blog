@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { buildMetadata } from '@/lib/seo'
 import { siteConfig, amazonAssociateDisclosure } from '@/lib/site'
 
@@ -23,7 +22,10 @@ export default function PrivacyPage() {
         運営者: {siteConfig.author.name}
         <br />
         連絡先:{' '}
-        <Link href="/contact/">お問い合わせページ</Link>よりご連絡ください。
+        <a href={siteConfig.contactFormUrl} target="_blank" rel="noopener noreferrer">
+          お問い合わせフォーム
+        </a>
+        よりご連絡ください。
       </p>
 
       <h2>個人情報の取得と利用目的</h2>

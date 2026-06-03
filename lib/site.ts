@@ -31,21 +31,12 @@ export const siteConfig = {
     // TODO: 実際の Qiita ユーザーページURLに差し替える
     qiita: 'https://qiita.com/aotatsu8',
   },
-  /** 問い合わせ用メールアドレス（/contact で使用。専用アドレスに変更推奨） */
-  email: 'dazaiqingmu91@gmail.com',
   /**
-   * Google フォームの「埋め込み」URL（最優先で使用）。
-   * Google フォーム → 送信 → < >（埋め込みHTML）の iframe src をそのまま貼る。
-   * 例: 'https://docs.google.com/forms/d/e/XXXX/viewform?embedded=true'
+   * お問い合わせ用 Google フォームの単体表示URL（別タブで開く用）。
+   * 埋め込み用の `?embedded=true` は付けない。
    */
-  googleFormEmbedUrl:
-    'https://docs.google.com/forms/d/e/1FAIpQLSc8Hdd_1DGqjbNDKxCcaErOHMDZMzFT68I7EulqtWlh3Ri95A/viewform?embedded=true',
-  /**
-   * お問い合わせフォームの送信先（Formspree 等の POST エンドポイント）。
-   * Google フォーム未設定時のフォーム。空文字ならメール問い合わせ（mailto）にフォールバックする。
-   * 例: 'https://formspree.io/f/xxxxxxx'
-   */
-  contactFormAction: '',
+  contactFormUrl:
+    'https://docs.google.com/forms/d/e/1FAIpQLSc8Hdd_1DGqjbNDKxCcaErOHMDZMzFT68I7EulqtWlh3Ri95A/viewform',
   /** ステマ規制対応: サイト共通のアフィリエイト利用開示文 */
   affiliateDisclosure:
     '当サイトはアフィリエイトプログラム（Amazonアソシエイト等）を利用しており、一部のリンクから収益を得ています。',
@@ -60,11 +51,11 @@ export const navItems = [
   { href: '/about/', label: 'About' },
 ] as const
 
-/** フッターに置く規約・運営関連ページ */
+/** フッターに置く規約・運営関連リンク（external は別タブで開く外部リンク） */
 export const legalNavItems = [
-  { href: '/about/', label: '運営者情報' },
-  { href: '/privacy/', label: 'プライバシーポリシー' },
-  { href: '/contact/', label: 'お問い合わせ' },
+  { href: '/about/', label: '運営者情報', external: false },
+  { href: '/privacy/', label: 'プライバシーポリシー', external: false },
+  { href: siteConfig.contactFormUrl, label: 'お問い合わせ', external: true },
 ] as const
 
 /** 相対パスをサイト絶対 URL に変換する */

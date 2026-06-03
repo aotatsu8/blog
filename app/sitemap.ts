@@ -9,7 +9,7 @@ import { getAllContent } from '@/lib/content'
 export const dynamic = 'force-static'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ['/', '/blog/', '/about/', '/privacy/', '/contact/']
+  const staticRoutes = ['/', '/blog/', '/about/', '/privacy/']
 
   const blog = getAllContent('blog').map(({ slug, frontmatter }) => ({
     url: absoluteUrl(`/blog/${slug}/`),

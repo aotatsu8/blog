@@ -101,19 +101,6 @@ export default function AboutPage() {
         </table>
       </div>
 
-      <h2>お問い合わせ</h2>
-      <p>
-        お仕事のご相談は{' '}
-        <a href={siteConfig.social.twitter} target="_blank" rel="noopener noreferrer">
-          X / Twitter
-        </a>{' '}
-        または{' '}
-        <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>{' '}
-        からご連絡ください。
-      </p>
-
       {/* ステマ規制対応: サイト共通のアフィリエイト開示（フッターと併せて明示） */}
       <h2 id="affiliate">アフィリエイトに関する表示</h2>
       <p>{siteConfig.affiliateDisclosure}</p>
