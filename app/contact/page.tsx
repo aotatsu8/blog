@@ -9,6 +9,7 @@ export const metadata: Metadata = buildMetadata({
 })
 
 export default function ContactPage() {
+  const hasGoogleForm = siteConfig.googleFormEmbedUrl.length > 0
   const hasForm = siteConfig.contactFormAction.length > 0
 
   return (
@@ -19,7 +20,25 @@ export default function ContactPage() {
         内容を確認のうえ、順次返信いたします。
       </p>
 
-      {hasForm ? (
+      {hasGoogleForm ? (
+        // Google フォームを iframe で埋め込み（静的書き出しでも動作）
+        <div className="not-prose">
+          <iframe
+            src={siteConfig.googleFormEmbedUrl}
+            title="お問い合わせフォーム"
+            className="h-[1200px] w-full rounded-md border border-neutral-200 dark:border-neutral-800"
+          >
+            読み込んでいます…
+          </iframe>
+          <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
+            フォームが表示されない場合は{' '}
+            <a href={`mailto:${siteConfig.email}`} className="underline underline-offset-2">
+              {siteConfig.email}
+            </a>{' '}
+            までご連絡ください。
+          </p>
+        </div>
+      ) : hasForm ? (
         // contactFormAction（Formspree 等）が設定されている場合は実フォームを表示。
         // 静的書き出しでも動く素の HTML フォーム（外部サービスへ POST）。
         <form
@@ -79,13 +98,6 @@ export default function ContactPage() {
               {siteConfig.email}
             </a>{' '}
             までお願いします。
-          </p>
-          <p>
-            あるいは{' '}
-            <a href={siteConfig.social.twitter} target="_blank" rel="noopener noreferrer">
-              X / Twitter
-            </a>{' '}
-            のDMでもご連絡いただけます。
           </p>
         </>
       )}

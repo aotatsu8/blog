@@ -34,8 +34,14 @@ export const siteConfig = {
   /** 問い合わせ用メールアドレス（/contact で使用。専用アドレスに変更推奨） */
   email: 'dazaiqingmu91@gmail.com',
   /**
+   * Google フォームの「埋め込み」URL（最優先で使用）。
+   * Google フォーム → 送信 → < >（埋め込みHTML）の iframe src をそのまま貼る。
+   * 例: 'https://docs.google.com/forms/d/e/XXXX/viewform?embedded=true'
+   */
+  googleFormEmbedUrl: '',
+  /**
    * お問い合わせフォームの送信先（Formspree 等の POST エンドポイント）。
-   * 空文字ならメール問い合わせ（mailto）にフォールバックする。
+   * Google フォーム未設定時のフォーム。空文字ならメール問い合わせ（mailto）にフォールバックする。
    * 例: 'https://formspree.io/f/xxxxxxx'
    */
   contactFormAction: '',
