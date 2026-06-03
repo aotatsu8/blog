@@ -1,4 +1,5 @@
 import Script from 'next/script'
+import { siteConfig } from '@/lib/site'
 
 /**
  * GA4 を環境変数 NEXT_PUBLIC_GA_ID で差し込む。未設定なら何も描画せず無効化する。
@@ -7,7 +8,7 @@ import Script from 'next/script'
  *   各リンクコンポーネント側（例: AffiliateLink）の onClick から gtag('event', ...) で行う。
  */
 export function Analytics() {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID
+  const gaId = siteConfig.gaId
   if (!gaId) return null
 
   return (

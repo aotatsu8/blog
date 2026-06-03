@@ -3,8 +3,11 @@
  * 本番 URL は環境変数 NEXT_PUBLIC_SITE_URL から取得し、未設定時はプレースホルダを使う。
  */
 
+// 本番URL。環境変数 NEXT_PUBLIC_SITE_URL があればそれを優先（将来の独自ドメイン用）、
+// 無ければ現在の本番URLを既定値として使う。
 const rawSiteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://example.com'
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
+  'https://blog.aotatsu7.workers.dev'
 
 export const siteConfig = {
   name: 'Tatsuya Aoki',
@@ -18,6 +21,11 @@ export const siteConfig = {
   ].join('\n'),
   url: rawSiteUrl,
   locale: 'ja_JP',
+  /**
+   * GA4 測定ID（G-XXXXXXXXXX）。環境変数 NEXT_PUBLIC_GA_ID があれば優先。
+   * 無ければここに直接書いてもよい（測定IDは公開情報なので秘匿不要）。空なら GA 無効。
+   */
+  gaId: process.env.NEXT_PUBLIC_GA_ID || '',
   /** OGP のデフォルト画像（/public 配下の静的画像を指す） */
   defaultOgImage: '/og-default.png',
   author: {
