@@ -49,8 +49,12 @@ export const siteConfig = {
     '当サイトはアフィリエイトプログラム（Amazonアソシエイト等）を利用しており、一部のリンクから収益を得ています。',
 } as const
 
-/** Amazonアソシエイト・プログラム規約で表示が必須の文言 */
-export const amazonAssociateDisclosure = `Amazonのアソシエイトとして、${siteConfig.name}は適格販売により収入を得ています。`
+/**
+ * Amazon等の物販アフィリエイト利用の開示文。
+ * 当サイトはAmazonアソシエイトに直接加入しておらず、「もしもアフィリエイト」経由で
+ * Amazon.co.jp等の商品を紹介しているため、直接会員専用の必須文言ではなく実態に即した表現にする。
+ */
+export const amazonAssociateDisclosure = `当サイトは「もしもアフィリエイト」をはじめとするアフィリエイトプログラムを通じて、Amazon.co.jp や楽天市場等の商品を紹介し、紹介料を得ています。`
 
 /** ヘッダー/フッターのナビゲーション項目 */
 export const navItems = [
