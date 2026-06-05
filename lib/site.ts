@@ -35,8 +35,8 @@ export const siteConfig = {
   social: {
     github: 'https://github.com/aotatsu8',
     twitter: 'https://twitter.com/TatsuyaAok8',
-    // TODO: 実際の Qiita ユーザーページURLに差し替える
     qiita: 'https://qiita.com/aotatsu8',
+    instagram: 'https://www.instagram.com/aotatsuhachi8/',
   },
   /**
    * お問い合わせ用 Google フォームの単体表示URL（別タブで開く用）。
