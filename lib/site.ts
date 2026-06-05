@@ -10,14 +10,13 @@ const rawSiteUrl =
   'https://blog.aotatsu7.workers.dev'
 
 export const siteConfig = {
-  name: 'Tatsuya Aoki',
+  name: 'Hachi',
   /** ブラウザタブやメタタイトルのサフィックスに使う短い肩書き */
-  title: 'Tatsuya Aoki — Frontend Engineer',
+  title: 'Hachi — Frontend Engineer',
   description: [
-    'フリーランスエンジニアとして活動しているHachi8です。',
-    'このブログでは、日々の気づきや好きなことをゆるく綴っています。',
-    '趣味は旅行とカフェ巡り。そして最近ハマっているのは植物を種子から育てることです。',
-    'プログラミングやエンジニアの疑問はQiitaに投稿しているのでぜひそちらもご覧ください。',
+    'Hachiです。フリーランスでフロントエンドをやってます。',
+    '旅に行ったり、カフェでぼーっとしたり、最近は種から植物を育てたり——好きなことをそのまま書いているブログです。',
+    'プログラミングやエンジニアの疑問はQiitaに投稿しているので、気になったらのぞいてみてください。',
   ].join('\n'),
   url: rawSiteUrl,
   locale: 'ja_JP',
@@ -29,7 +28,7 @@ export const siteConfig = {
   /** OGP のデフォルト画像（/public 配下の静的画像を指す） */
   defaultOgImage: '/og-default.png',
   author: {
-    name: 'Tatsuya Aoki',
+    name: 'Hachi',
     /** Twitter card の creator に使用（@ なし） */
     twitter: 'your_handle',
   },

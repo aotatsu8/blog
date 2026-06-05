@@ -8,7 +8,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-neutral-200/70 bg-white/80 backdrop-blur dark:border-neutral-800/70 dark:bg-neutral-950/80">
       <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-4">
         <Link href="/" className="font-bold tracking-tight">
-          {siteConfig.name}
+          {siteConfig.name}'s Blog
         </Link>
         <div className="flex items-center gap-1 sm:gap-4">
           <nav className="flex items-center gap-3 text-sm sm:gap-5">
