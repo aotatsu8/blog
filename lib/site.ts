@@ -46,15 +46,8 @@ export const siteConfig = {
     'https://docs.google.com/forms/d/e/1FAIpQLSc8Hdd_1DGqjbNDKxCcaErOHMDZMzFT68I7EulqtWlh3Ri95A/viewform',
   /** ステマ規制対応: サイト共通のアフィリエイト利用開示文 */
   affiliateDisclosure:
-    '当サイトはアフィリエイトプログラム（Amazonアソシエイト等）を利用しており、一部のリンクから収益を得ています。',
+    '当サイトはアフィリエイトプログラムを利用しており、一部のリンクから収益を得ています。',
 } as const
-
-/**
- * Amazon等の物販アフィリエイト利用の開示文。
- * 当サイトはAmazonアソシエイトに直接加入しておらず、「もしもアフィリエイト」経由で
- * Amazon.co.jp等の商品を紹介しているため、直接会員専用の必須文言ではなく実態に即した表現にする。
- */
-export const amazonAssociateDisclosure = `当サイトは「もしもアフィリエイト」をはじめとするアフィリエイトプログラムを通じて、Amazon.co.jp や楽天市場等の商品を紹介し、紹介料を得ています。`
 
 /** ヘッダー/フッターのナビゲーション項目 */
 export const navItems = [

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { buildMetadata } from '@/lib/seo'
-import { siteConfig, amazonAssociateDisclosure } from '@/lib/site'
+import { siteConfig } from '@/lib/site'
 
 export const metadata: Metadata = buildMetadata({
   title: 'プライバシーポリシー',
@@ -57,10 +57,9 @@ export default function PrivacyPage() {
 
       <h2>広告・アフィリエイトプログラムについて</h2>
       <p>
-        当サイトは、第三者が提供するアフィリエイトプログラム（Amazonアソシエイト・
-        各種ASP 等）を利用して商品・サービスを紹介し、収益を得ています。
+        当サイトは、第三者が提供するアフィリエイトプログラム（もしもアフィリエイト等）を通じて、
+        Amazon.co.jp・楽天市場・Yahoo!ショッピング等の商品・サービスを紹介し、紹介料を得ています。
       </p>
-      <p>{amazonAssociateDisclosure}</p>
       <p>
         これらのプログラムでは、ユーザーの興味に応じた商品を表示するため、当サイトや他サイトへの
         アクセスに関する情報（Cookie 等。氏名・住所・メールアドレス・電話番号は含みません）を
