@@ -48,7 +48,9 @@ jobs:
             RANGE="$BEFORE $AFTER"
           fi
           echo "diff range: $RANGE"
-          ADDED=$(git diff --name-only --diff-filter=A $RANGE -- 'content/blog/**/*.mdx' || true)
+          # pathspec は 'content/blog/' 直下も拾える形にする（**/*.mdx だと直下ファイルに
+          # マッチしない）。.mdx / qiita- の絞り込みは scripts/post-to-x.mjs 側で行う。
+          ADDED=$(git diff --name-only --diff-filter=A $RANGE -- 'content/blog/' | grep '\.mdx$' || true)
           echo "added files:"
           echo "$ADDED"
           {
