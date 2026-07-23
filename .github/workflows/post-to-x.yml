@@ -1,0 +1,72 @@
+name: Post new article to X
+
+# main への push で content/blog に「新規追加」された手書き記事を検出し、
+# X 投稿の下書き Issue を作成する（既定）。POST_MODE=live で即投稿もできる。
+#
+# 対象の絞り込みは scripts/post-to-x.mjs 側で行う（qiita-* / draft: true を除外）。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/blog/**'
+
+# 同時実行を抑止
+concurrency:
+  group: post-to-x
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write # 下書きモードで Issue を起票するために必要
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # 差分検出のため直前コミットも取得する
+          fetch-depth: 2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # push で「追加(A)」された content/blog 配下の mdx を洗い出す。
+      # 初回 push など before が無い場合は直近コミットの追加分を対象にする。
+      - name: Detect added articles
+        id: detect
+        run: |
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            RANGE="$AFTER^ $AFTER"
+          else
+            RANGE="$BEFORE $AFTER"
+          fi
+          echo "diff range: $RANGE"
+          ADDED=$(git diff --name-only --diff-filter=A $RANGE -- 'content/blog/**/*.mdx' || true)
+          echo "added files:"
+          echo "$ADDED"
+          {
+            echo "files<<EOF"
+            echo "$ADDED"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Generate X draft (or post)
+        if: steps.detect.outputs.files != ''
+        env:
+          # 既定は下書き Issue 生成。実投稿したいときは 'live' に変える。
+          POST_MODE: draft
+          ADDED_FILES: ${{ steps.detect.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # --- live モードで実投稿する場合のみ使用（下書きモードでは不要）---
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+        run: node scripts/post-to-x.mjs

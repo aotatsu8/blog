@@ -34,7 +34,7 @@ export const siteConfig = {
   },
   social: {
     github: 'https://github.com/aotatsu8',
-    twitter: 'https://twitter.com/TatsuyaAok8',
+    twitter: 'https://twitter.com/Hachi8blog8',
     qiita: 'https://qiita.com/aotatsu8',
     instagram: 'https://www.instagram.com/aotatsuhachi8/',
   },
