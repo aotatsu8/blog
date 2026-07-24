@@ -30,7 +30,7 @@ export const siteConfig = {
   author: {
     name: 'Hachi',
     /** Twitter card の creator に使用（@ なし） */
-    twitter: 'your_handle',
+    twitter: 'Hachi8blog8',
   },
   social: {
     github: 'https://github.com/aotatsu8',

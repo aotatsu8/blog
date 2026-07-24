@@ -33,8 +33,21 @@ function makeDescription(body) {
   t = t.replace(/^\s{0,3}#{1,6}\s+/gm, '') // 見出し記号
   t = t.replace(/[>*_~|]/g, ' ') // 装飾記号
   t = t.replace(/\s+/g, ' ').trim()
-  const sliced = t.slice(0, 90)
-  return t.length > 90 ? `${sliced}…` : sliced
+
+  const MAX = 120
+  if (t.length <= MAX) return t
+  const window = t.slice(0, MAX)
+  // 上限付近に句点（。！？）があれば、そこで文を切って自然に終える（…を付けない）
+  const sentenceEnd = Math.max(
+    window.lastIndexOf('。'),
+    window.lastIndexOf('！'),
+    window.lastIndexOf('？'),
+  )
+  if (sentenceEnd >= 40) return window.slice(0, sentenceEnd + 1)
+  // 句点が無ければ読点で切って … を付ける（語の途中で切れるのを避ける）
+  const comma = window.lastIndexOf('、')
+  if (comma >= 60) return `${window.slice(0, comma)}…`
+  return `${window}…`
 }
 
 /**
